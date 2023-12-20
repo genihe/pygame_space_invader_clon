@@ -235,12 +235,12 @@ def main():
         player.move_lasers(-laser_vel, enemies)
 
 def main_menu():
-    title_font=pygame.font.SysFont("comicsans",70)
+    title_font=pygame.font.SysFont("comicsans",45)
     run=True
     while run:
         WIN.blit(BG,(0,0))
-        title_label=title_font.render("Press the mouse to begin...", 1, (255,255,255))
-        WIN.blit(title_label,(WIDTH/2 - title_label.get_width()/2,300))
+        title_label=title_font.render("Press the mouse to begin", 1, (255,255,255))
+        WIN.blit(title_label,(WIDTH/2 - title_label.get_width()/2,HEIGHT/2-45))
 
         pygame.display.update()
         for event in pygame.event.get():
@@ -251,4 +251,4 @@ def main_menu():
     
     pygame.quit()
 
-main()
+main_menu()
