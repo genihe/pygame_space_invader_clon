@@ -107,15 +107,16 @@ class Player(Ship):
                 for obj in objs:
                     if laser.collision(obj):
                         objs.remove(obj)
-                        self.lasers.remove(laser)
+                        if laser in self.lasers:
+                            self.lasers.remove(laser)
 
     def draw(self, window):
         super().draw(window)
-        self.healthbar()
+        self.healthbar(window)
 
     def healthbar(self, window):
         pygame.draw.rect(window, (255,0,0),(self.x,self.y+self.ship_img.get_height()+10, self.ship_img.get_width(), 10))
-        pygame.draw.rect(window, (0,255,0),(self.x,self.y+self.ship_img.get_height()+10, self.ship_img.get_width() * (self.health/self.max_health), 10)
+        pygame.draw.rect(window, (0,255,0),(self.x,self.y+self.ship_img.get_height()+10, self.ship_img.get_width() * (self.health/self.max_health), 10))
 
 
 class Enemy(Ship):
@@ -203,7 +204,7 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run =False
+                quit()
 
         keys=pygame.key.get_pressed()
         if keys[pygame.K_a] and player.y - player_vel > 0: 
@@ -212,7 +213,7 @@ def main():
             player.x+=player_vel
         if keys[pygame.K_w] and player.y + player_vel > 0:
             player.y-=player_vel 
-        if keys[pygame.K_s] and player.y + player_vel + player.get_height() < HEIGHT:
+        if keys[pygame.K_s] and player.y + player_vel + player.get_height() + 15 < HEIGHT:
             player.y+=player_vel
         if keys[pygame.K_SPACE]:
             player.shoot()
@@ -232,5 +233,22 @@ def main():
                 enemies.remove(enemy)
 
         player.move_lasers(-laser_vel, enemies)
+
+def main_menu():
+    title_font=pygame.font.SysFont("comicsans",70)
+    run=True
+    while run:
+        WIN.blit(BG,(0,0))
+        title_label=title_font.render("Press the mouse to begin...", 1, (255,255,255))
+        WIN.blit(title_label,(WIDTH/2 - title_label.get_width()/2,300))
+
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                run=False
+            if event.type==pygame.MOUSEBUTTONDOWN:
+                main()
+    
+    pygame.quit()
 
 main()
